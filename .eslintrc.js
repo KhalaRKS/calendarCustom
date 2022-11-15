@@ -1,5 +1,6 @@
 module.exports = {
   root: true,
+  'eol-last': ['error', 'never'],
   extends: '@react-native-community',
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
