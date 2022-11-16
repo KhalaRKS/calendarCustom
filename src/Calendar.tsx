@@ -1,50 +1,24 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import CalendarPicker from 'react-native-calendar-picker';
 import {styles, StylesProps} from './styles/Calendar.stylesheet';
-import useCalendar from './hooks/useCalendar';
-import {Button, Text} from 'react-native';
+import {Button} from 'react-native';
 import {utils} from './utils';
 import {Logger} from './utils/logger';
-import {Moment} from 'moment';
+import useSyncCalendar from './hooks/useSyncCalendar';
 
 type Props = {};
 
 const Calendar = (props: Props) => {
   const {
-    start: startCalendarOne,
-    end: endCalendarOne,
-    setStart: setStartCalendarOne,
-    setEnd: setEndCalendarOne,
-    onChangeDate: onChangeDateCalendarOne,
-    reset: resetCalendarOne,
-  } = useCalendar();
-
-  const {
-    start: startCalendarTwo,
-    end: endCalendarTwo,
-    setStart: setStartCalendarTwo,
-    setEnd: setEndCalendarTwo,
-    onChangeDate: onChangeDateCalendarTwo,
-    reset: resetCalendarTwo,
-  } = useCalendar();
-
-  const onCalendarOnePress = () => {
-    if (startCalendarTwo && endCalendarTwo) {
-      resetCalendarTwo();
-    }
-  };
-
-  const onCalendarTwoPress = (date: Moment) => {
-    if (startCalendarOne && endCalendarOne) {
-      resetCalendarOne();
-    }
-
-    if (startCalendarOne && !endCalendarOne) {
-      setStartCalendarTwo(utils.getNextMonth());
-      setEndCalendarTwo(date.toDate());
-      setEndCalendarOne(date.toDate());
-    }
-  };
+    startCalendarOne,
+    endCalendarOne,
+    startCalendarTwo,
+    endCalendarTwo,
+    onCalendarOnePress,
+    onCalendarTwoPress,
+    onChangeDateCalendarOne,
+    onChangeDateCalendarTwo,
+  } = useSyncCalendar();
 
   return (
     <>
@@ -72,13 +46,7 @@ const Calendar = (props: Props) => {
         selectedStartDate={startCalendarTwo}
         selectedEndDate={endCalendarTwo}
       />
-      <Button
-        title="Reset"
-        onPress={() => {
-          resetCalendarOne();
-          resetCalendarTwo();
-        }}
-      />
+
       <Button
         title="log"
         onPress={() => {
