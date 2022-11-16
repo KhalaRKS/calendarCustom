@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 
 import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
-import Calendar from './src/Calendar';
+import Calendar from './src/Calendar/Calendar';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';

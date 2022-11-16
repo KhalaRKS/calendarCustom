@@ -1,8 +1,8 @@
-import React from 'react';
 import useSingleCalendar from './useSingleCalendar';
 import {Moment} from 'moment';
 import {utils} from '../utils/calendar';
-import {Logger} from '../utils/logger';
+import moment from 'moment';
+import {DateChangedCallback} from 'react-native-calendar-picker';
 
 const useSyncCalendar = () => {
   const {
@@ -44,19 +44,49 @@ const useSyncCalendar = () => {
     }
   };
 
+  const onDateChangeCalendarOne: DateChangedCallback = (date, type) => {
+    onChangeDateCalendarOne(date, type);
+    onCalendarOnePress(date);
+  };
+
+  const onMonthChangeCalendarOne = (date: Moment) => {
+    setCurrentMonthNumberCalendarOne(utils.getNumberMonth(date));
+    setCurrentYearNumberCalendarOne(utils.getYear(date));
+  };
+
+  const onDateChangeCalendarTwo: DateChangedCallback = (date, type) => {
+    onChangeDateCalendarTwo(date, type);
+    onCalendarTwoPress(date);
+  };
+
+  const maxDateCalendarTwo = () => {
+    const currentDate: Date = utils.getDateNextMonth(
+      currentMonthNumberCalendarOne ?? utils.getCurrentMonth(),
+      currentYearNumberCalendarOne ?? new Date().getFullYear(),
+    );
+
+    const maxDate = moment(currentDate).endOf('month');
+
+    return maxDate.toDate();
+  };
+
+  const getInitialAndMinDateCalendarTwo = () => {
+    return utils.getDateNextMonth(
+      currentMonthNumberCalendarOne ?? utils.getCurrentMonth(),
+      currentYearNumberCalendarOne ?? new Date().getFullYear(),
+    );
+  };
+
   return {
     startCalendarOne,
     endCalendarOne,
-    currentMonthNumberCalendarOne,
-    currentYearNumberCalendarOne,
     startCalendarTwo,
     endCalendarTwo,
-    onCalendarOnePress,
-    onChangeDateCalendarOne,
-    setCurrentMonthNumberCalendarOne,
-    setCurrentYearNumberCalendarOne,
-    onChangeDateCalendarTwo,
-    onCalendarTwoPress,
+    onDateChangeCalendarOne,
+    onMonthChangeCalendarOne,
+    onDateChangeCalendarTwo,
+    getInitialAndMinDateCalendarTwo,
+    maxDateCalendarTwo,
   };
 };
 
