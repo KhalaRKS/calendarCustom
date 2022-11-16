@@ -43,24 +43,23 @@ const Calendar = (props: Props) => {
     onCalendarTwoPress(date);
   };
 
-  /*  const minDateCalendarTwo = () => {
-    let month = currentMonthNumberCalendarOne;
-    let year = currentYearNumberCalendarOne;
+  const maxDateCalendarTwo = () => {
+    const currentDate: Date = utils.getDateNextMonth(
+      currentMonthNumberCalendarOne ?? utils.getCurrentMonth(),
+      currentYearNumberCalendarOne ?? new Date().getFullYear(),
+    );
 
-    if (!currentMonthNumberCalendarOne) {
-      month = utils.getCurrentMonth() + 1;
-      year = new Date().getFullYear();
-    }
+    const maxDate = moment(currentDate).endOf('month');
 
-    if (month === 11) {
-      year! += 1;
-    }
+    return maxDate.toDate();
+  };
 
-    const date = dayjs().month(month!).year(year!).date(1).toDate();
-
-    Logger.log(date!.toString());
-    return date;
-  }; */
+  const getInitialAndMinDateCalendarTwo = () => {
+    return utils.getDateNextMonth(
+      currentMonthNumberCalendarOne ?? utils.getCurrentMonth(),
+      currentYearNumberCalendarOne ?? new Date().getFullYear(),
+    );
+  };
 
   return (
     <>
@@ -77,12 +76,9 @@ const Calendar = (props: Props) => {
         {...StylesProps}
         allowRangeSelection={true}
         onDateChange={onDateChangeCalendarTwo}
-        initialDate={utils.getDateNextMonth(
-          currentMonthNumberCalendarOne ?? utils.getCurrentMonth(),
-          currentYearNumberCalendarOne ?? new Date().getFullYear(),
-        )}
-        //minDate={minDateCalendarTwo()}
-        //maxDate={moment('2023-12-31').toDate()}
+        initialDate={getInitialAndMinDateCalendarTwo()}
+        minDate={getInitialAndMinDateCalendarTwo()}
+        maxDate={maxDateCalendarTwo()}
         restrictMonthNavigation={true}
         selectedStartDate={startCalendarTwo}
         selectedEndDate={endCalendarTwo}

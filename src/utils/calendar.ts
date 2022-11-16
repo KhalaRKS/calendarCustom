@@ -48,4 +48,8 @@ export const utils = {
       .endOf('month')
       .toDate();
   },
+
+  getDaysInMonth: (date: Moment): number => {
+    return moment(date).daysInMonth();
+  },
 };
