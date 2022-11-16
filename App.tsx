@@ -23,11 +23,6 @@ import {
 import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
 import Calendar from './src/Calendar';
 
-const FIRST_CALENDAR_MONTH = dayjs().month();
-const SECOND_CALENDAR_MONTH = dayjs().add(1, 'month').month();
-const QUANTITY_DAYS_FIRST_CALENDAR = dayjs().daysInMonth();
-const QUANTITY_DAYS_SECOND_CALENDAR = dayjs().add(1, 'month').daysInMonth();
-
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -47,7 +42,6 @@ const App = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
         <View>
           {/*  */}
           <Calendar />
