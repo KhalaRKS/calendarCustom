@@ -7,14 +7,18 @@ type Props = {};
 const useSingleCalendar = () => {
   const [start, setStart] = useState<Date | undefined>();
   const [end, setEnd] = useState<Date | undefined>();
-  const [currentMonth, setCurrentMonth] = useState<number | undefined>();
-  const [currentYear, setCurrentYear] = useState<number | undefined>();
+  const [currentMonthNumber, setCurrentMonthNumber] = useState<
+    number | undefined
+  >();
+  const [currentYearNumber, setCurrentYearNumber] = useState<
+    number | undefined
+  >();
 
   const reset = () => {
     setStart(undefined);
     setEnd(undefined);
-    setCurrentMonth(undefined);
-    setCurrentYear(undefined);
+    setCurrentMonthNumber(undefined);
+    setCurrentYearNumber(undefined);
   };
 
   const onChangeDate: DateChangedCallback = (date, type: TYPESELECT) => {
@@ -35,14 +39,14 @@ const useSingleCalendar = () => {
   return {
     start,
     end,
-    currentMonth,
-    currentYear,
+    currentMonthNumber,
+    currentYearNumber,
     setStart,
     setEnd,
     reset,
     onChangeDate,
-    setCurrentMonth,
-    setCurrentYear,
+    setCurrentMonthNumber,
+    setCurrentYearNumber,
   };
 };
 

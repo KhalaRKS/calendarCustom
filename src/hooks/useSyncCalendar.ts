@@ -12,10 +12,10 @@ const useSyncCalendar = () => {
     setEnd: setEndCalendarOne,
     onChangeDate: onChangeDateCalendarOne,
     reset: resetCalendarOne,
-    currentMonth: currentMonthCalendarOne,
-    setCurrentMonth: setCurrentMonthCalendarOne,
-    currentYear: currentYearCalendarOne,
-    setCurrentYear: setCurrentYearCalendarOne,
+    currentMonthNumber: currentMonthNumberCalendarOne,
+    currentYearNumber: currentYearNumberCalendarOne,
+    setCurrentMonthNumber: setCurrentMonthNumberCalendarOne,
+    setCurrentYearNumber: setCurrentYearNumberCalendarOne,
   } = useSingleCalendar();
 
   const {
@@ -47,14 +47,14 @@ const useSyncCalendar = () => {
   return {
     startCalendarOne,
     endCalendarOne,
-    currentMonthCalendarOne,
-    currentYearCalendarOne,
+    currentMonthNumberCalendarOne,
+    currentYearNumberCalendarOne,
     startCalendarTwo,
     endCalendarTwo,
     onCalendarOnePress,
     onChangeDateCalendarOne,
-    setCurrentMonthCalendarOne,
-    setCurrentYearCalendarOne,
+    setCurrentMonthNumberCalendarOne,
+    setCurrentYearNumberCalendarOne,
     onChangeDateCalendarTwo,
     onCalendarTwoPress,
   };

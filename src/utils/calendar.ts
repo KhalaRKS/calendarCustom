@@ -18,10 +18,19 @@ export const utils = {
     return dayjs().month();
   },
 
-  getNextMonth: (month: number = 0, year: number): Date => {
+  getDateNextMonth: (month: number, year: number): Date => {
+    let m = month;
+    let y = year;
+
+    if (month === 11) {
+      m = 0;
+      y = year + 1;
+      return dayjs().month(m).year(y).date(1).toDate();
+    }
+
     return dayjs()
-      .month(month + 1)
-      .year(year)
+      .month(m + 1)
+      .year(y)
       .date(1)
       .toDate();
   },

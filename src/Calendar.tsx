@@ -1,11 +1,14 @@
 import React from 'react';
-import CalendarPicker from 'react-native-calendar-picker';
-import {styles, StylesProps} from './styles/Calendar.stylesheet';
-import {Button} from 'react-native';
+import CalendarPicker, {
+  DateChangedCallback,
+} from 'react-native-calendar-picker';
+import {StylesProps} from './styles/Calendar.stylesheet';
 import {utils} from './utils';
-import {Logger} from './utils/logger';
 import useSyncCalendar from './hooks/useSyncCalendar';
 import dayjs from 'dayjs';
+import {Moment} from 'moment';
+import {Logger} from './utils/logger';
+import moment from 'moment';
 
 type Props = {};
 
@@ -15,29 +18,57 @@ const Calendar = (props: Props) => {
     endCalendarOne,
     startCalendarTwo,
     endCalendarTwo,
-    currentMonthCalendarOne,
-    currentYearCalendarOne,
-    setCurrentMonthCalendarOne,
+    currentMonthNumberCalendarOne,
+    currentYearNumberCalendarOne,
+    setCurrentMonthNumberCalendarOne,
+    setCurrentYearNumberCalendarOne,
     onCalendarOnePress,
     onCalendarTwoPress,
     onChangeDateCalendarOne,
     onChangeDateCalendarTwo,
-    setCurrentYearCalendarOne,
   } = useSyncCalendar();
+
+  const onDateChangeCalendarOne: DateChangedCallback = (date, type) => {
+    onChangeDateCalendarOne(date, type);
+    onCalendarOnePress(date);
+  };
+
+  const onMonthChangeCalendarOne = (date: Moment) => {
+    setCurrentMonthNumberCalendarOne(utils.getNumberMonth(date));
+    setCurrentYearNumberCalendarOne(utils.getYear(date));
+  };
+
+  const onDateChangeCalendarTwo: DateChangedCallback = (date, type) => {
+    onChangeDateCalendarTwo(date, type);
+    onCalendarTwoPress(date);
+  };
+
+  /*  const minDateCalendarTwo = () => {
+    let month = currentMonthNumberCalendarOne;
+    let year = currentYearNumberCalendarOne;
+
+    if (!currentMonthNumberCalendarOne) {
+      month = utils.getCurrentMonth() + 1;
+      year = new Date().getFullYear();
+    }
+
+    if (month === 11) {
+      year! += 1;
+    }
+
+    const date = dayjs().month(month!).year(year!).date(1).toDate();
+
+    Logger.log(date!.toString());
+    return date;
+  }; */
 
   return (
     <>
       <CalendarPicker
         {...StylesProps}
         allowRangeSelection={true}
-        onDateChange={(date, type) => {
-          onChangeDateCalendarOne(date, type);
-          onCalendarOnePress(date);
-        }}
-        onMonthChange={date => {
-          setCurrentMonthCalendarOne(utils.getNumberMonth(date));
-          setCurrentYearCalendarOne(utils.getYear(date));
-        }}
+        onDateChange={onDateChangeCalendarOne}
+        onMonthChange={onMonthChangeCalendarOne}
         selectedStartDate={startCalendarOne}
         selectedEndDate={endCalendarOne}
       />
@@ -45,20 +76,13 @@ const Calendar = (props: Props) => {
       <CalendarPicker
         {...StylesProps}
         allowRangeSelection={true}
-        onDateChange={(date, type) => {
-          onChangeDateCalendarTwo(date, type);
-          onCalendarTwoPress(date);
-        }}
-        initialDate={utils.getNextMonth(
-          currentMonthCalendarOne ?? utils.getCurrentMonth(),
-          currentYearCalendarOne ?? new Date().getFullYear(),
+        onDateChange={onDateChangeCalendarTwo}
+        initialDate={utils.getDateNextMonth(
+          currentMonthNumberCalendarOne ?? utils.getCurrentMonth(),
+          currentYearNumberCalendarOne ?? new Date().getFullYear(),
         )}
-        minDate={dayjs()
-          .month(currentMonthCalendarOne ?? utils.getCurrentMonth() + 1)
-          .year(currentYearCalendarOne ?? new Date().getFullYear())
-          .date(1)
-          .toDate()}
-        maxDate={utils.getMaxDateSecondCalendar()}
+        //minDate={minDateCalendarTwo()}
+        //maxDate={moment('2023-12-31').toDate()}
         restrictMonthNavigation={true}
         selectedStartDate={startCalendarTwo}
         selectedEndDate={endCalendarTwo}
