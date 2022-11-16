@@ -1,7 +1,8 @@
 import React from 'react';
-import useCalendar from './useCalendar';
+import useSingleCalendar from './useSingleCalendar';
 import {Moment} from 'moment';
 import {utils} from '../utils/calendar';
+import {Logger} from '../utils/logger';
 
 const useSyncCalendar = () => {
   const {
@@ -11,7 +12,11 @@ const useSyncCalendar = () => {
     setEnd: setEndCalendarOne,
     onChangeDate: onChangeDateCalendarOne,
     reset: resetCalendarOne,
-  } = useCalendar();
+    currentMonth: currentMonthCalendarOne,
+    setCurrentMonth: setCurrentMonthCalendarOne,
+    currentYear: currentYearCalendarOne,
+    setCurrentYear: setCurrentYearCalendarOne,
+  } = useSingleCalendar();
 
   const {
     start: startCalendarTwo,
@@ -20,9 +25,9 @@ const useSyncCalendar = () => {
     setEnd: setEndCalendarTwo,
     onChangeDate: onChangeDateCalendarTwo,
     reset: resetCalendarTwo,
-  } = useCalendar();
+  } = useSingleCalendar();
 
-  const onCalendarOnePress = () => {
+  const onCalendarOnePress = (date: Moment) => {
     if (startCalendarTwo && endCalendarTwo) {
       resetCalendarTwo();
     }
@@ -34,7 +39,6 @@ const useSyncCalendar = () => {
     }
 
     if (startCalendarOne && !endCalendarOne) {
-      setStartCalendarTwo(utils.getNextMonth());
       setEndCalendarTwo(date.toDate());
       setEndCalendarOne(date.toDate());
     }
@@ -43,11 +47,15 @@ const useSyncCalendar = () => {
   return {
     startCalendarOne,
     endCalendarOne,
+    currentMonthCalendarOne,
+    currentYearCalendarOne,
     startCalendarTwo,
     endCalendarTwo,
-    onChangeDateCalendarOne,
-    onChangeDateCalendarTwo,
     onCalendarOnePress,
+    onChangeDateCalendarOne,
+    setCurrentMonthCalendarOne,
+    setCurrentYearCalendarOne,
+    onChangeDateCalendarTwo,
     onCalendarTwoPress,
   };
 };

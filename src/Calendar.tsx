@@ -5,6 +5,7 @@ import {Button} from 'react-native';
 import {utils} from './utils';
 import {Logger} from './utils/logger';
 import useSyncCalendar from './hooks/useSyncCalendar';
+import dayjs from 'dayjs';
 
 type Props = {};
 
@@ -14,10 +15,14 @@ const Calendar = (props: Props) => {
     endCalendarOne,
     startCalendarTwo,
     endCalendarTwo,
+    currentMonthCalendarOne,
+    currentYearCalendarOne,
+    setCurrentMonthCalendarOne,
     onCalendarOnePress,
     onCalendarTwoPress,
     onChangeDateCalendarOne,
     onChangeDateCalendarTwo,
+    setCurrentYearCalendarOne,
   } = useSyncCalendar();
 
   return (
@@ -25,10 +30,13 @@ const Calendar = (props: Props) => {
       <CalendarPicker
         {...StylesProps}
         allowRangeSelection={true}
-        minDate={utils.getToday()}
         onDateChange={(date, type) => {
           onChangeDateCalendarOne(date, type);
-          onCalendarOnePress();
+          onCalendarOnePress(date);
+        }}
+        onMonthChange={date => {
+          setCurrentMonthCalendarOne(utils.getNumberMonth(date));
+          setCurrentYearCalendarOne(utils.getYear(date));
         }}
         selectedStartDate={startCalendarOne}
         selectedEndDate={endCalendarOne}
@@ -41,19 +49,19 @@ const Calendar = (props: Props) => {
           onChangeDateCalendarTwo(date, type);
           onCalendarTwoPress(date);
         }}
-        initialDate={utils.getNextMonth()}
-        minDate={utils.getNextMonth()}
+        initialDate={utils.getNextMonth(
+          currentMonthCalendarOne ?? utils.getCurrentMonth(),
+          currentYearCalendarOne ?? new Date().getFullYear(),
+        )}
+        minDate={dayjs()
+          .month(currentMonthCalendarOne ?? utils.getCurrentMonth() + 1)
+          .year(currentYearCalendarOne ?? new Date().getFullYear())
+          .date(1)
+          .toDate()}
+        maxDate={utils.getMaxDateSecondCalendar()}
+        restrictMonthNavigation={true}
         selectedStartDate={startCalendarTwo}
         selectedEndDate={endCalendarTwo}
-      />
-
-      <Button
-        title="log"
-        onPress={() => {
-          Logger.log(
-            `start1: ${startCalendarOne}, end1: ${endCalendarOne}, start2: ${startCalendarTwo}, end2: ${endCalendarTwo}`,
-          );
-        }}
       />
     </>
   );
