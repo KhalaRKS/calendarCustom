@@ -1,53 +1,48 @@
-import React, {useState} from 'react';
-import CalendarPicker, {
-  DateChangedCallback,
-} from 'react-native-calendar-picker';
-import dayjs from 'dayjs';
+import React, {useEffect, useRef, useState} from 'react';
+import CalendarPicker from 'react-native-calendar-picker';
 import {styles, StylesProps} from './styles/Calendar.stylesheet';
-import {Moment} from 'moment';
 import useCalendar from './hooks/useCalendar';
 import {Button, Text} from 'react-native';
-import {TYPESELECT} from './types/select.type';
 import {utils} from './utils';
 import {Logger} from './utils/logger';
+import {Moment} from 'moment';
 
 type Props = {};
 
 const Calendar = (props: Props) => {
-  const [start, setStart] = useState<Date | undefined>();
-  const [end, setEnd] = useState<Date | undefined>();
+  const {
+    start: startCalendarOne,
+    end: endCalendarOne,
+    setStart: setStartCalendarOne,
+    setEnd: setEndCalendarOne,
+    onChangeDate: onChangeDateCalendarOne,
+    reset: resetCalendarOne,
+  } = useCalendar();
 
-  const reset = () => {
-    setStart(undefined);
-    setEnd(undefined);
-    setStart2(undefined);
-    setEnd2(undefined);
-  };
+  const {
+    start: startCalendarTwo,
+    end: endCalendarTwo,
+    setStart: setStartCalendarTwo,
+    setEnd: setEndCalendarTwo,
+    onChangeDate: onChangeDateCalendarTwo,
+    reset: resetCalendarTwo,
+  } = useCalendar();
 
-  const onChangeDate: DateChangedCallback = (date, type: TYPESELECT) => {
-    if (!date) {
-      return;
-    }
-
-    if (type === 'START_DATE') {
-      Logger.log('START_DATE');
-      setStart(date.toDate());
-      setEnd(undefined);
-    }
-
-    if (type === 'END_DATE') {
-      Logger.log('END_DATE');
-      setEnd(date.toDate());
+  const onCalendarOnePress = () => {
+    if (startCalendarTwo && endCalendarTwo) {
+      resetCalendarTwo();
     }
   };
 
-  // ------------------------------------------------------------
-  const [start2, setStart2] = useState<Date | undefined>();
-  const [end2, setEnd2] = useState<Date | undefined>();
+  const onCalendarTwoPress = (date: Moment) => {
+    if (startCalendarOne && endCalendarOne) {
+      resetCalendarOne();
+    }
 
-  const onChangeDate2: DateChangedCallback = (date, type) => {
-    if (!date) {
-      return;
+    if (startCalendarOne && !endCalendarOne) {
+      setStartCalendarTwo(utils.getNextMonth());
+      setEndCalendarTwo(date.toDate());
+      setEndCalendarOne(date.toDate());
     }
   };
 
@@ -57,24 +52,38 @@ const Calendar = (props: Props) => {
         {...StylesProps}
         allowRangeSelection={true}
         minDate={utils.getToday()}
-        onDateChange={onChangeDate}
-        selectedStartDate={start}
-        selectedEndDate={end}
+        onDateChange={(date, type) => {
+          onChangeDateCalendarOne(date, type);
+          onCalendarOnePress();
+        }}
+        selectedStartDate={startCalendarOne}
+        selectedEndDate={endCalendarOne}
       />
 
       <CalendarPicker
         {...StylesProps}
         allowRangeSelection={true}
-        onDateChange={onChangeDate2}
+        onDateChange={(date, type) => {
+          onChangeDateCalendarTwo(date, type);
+          onCalendarTwoPress(date);
+        }}
         initialDate={utils.getNextMonth()}
         minDate={utils.getNextMonth()}
+        selectedStartDate={startCalendarTwo}
+        selectedEndDate={endCalendarTwo}
       />
-      <Button title="Reset" onPress={reset} />
+      <Button
+        title="Reset"
+        onPress={() => {
+          resetCalendarOne();
+          resetCalendarTwo();
+        }}
+      />
       <Button
         title="log"
         onPress={() => {
           Logger.log(
-            `start1: ${start}, end1: ${end}, start2: ${start2}, end2: ${end2}`,
+            `start1: ${startCalendarOne}, end1: ${endCalendarOne}, start2: ${startCalendarTwo}, end2: ${endCalendarTwo}`,
           );
         }}
       />
