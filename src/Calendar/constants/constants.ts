@@ -1,62 +1,184 @@
-useEffect(() => {
-  if (!billDays || billDays.length <= 0) return;
+import moment from 'moment/moment';
+let today = moment();
+let day = today.clone().startOf('month');
 
-  let auxCustomDays = [];
-  let auxChartValues = [];
-  billDays.forEach((el, index) => {
-    console.log('cada billday tiene dentro', el);
-    auxChartValues.push({
-      date: el.day.date,
-      count: el.bills.length,
-    });
-    auxCustomDays.push({
-      ...el.day,
+export const Days = [
+  {
+    // Esta fecha se deberia pasa dinamicamente para referenciar el dia
+    day: {
+      date: moment()
+        .year(2022)
+        .month(10)
+        .date(Math.random() * 31),
+      // Set colors to date
       style: {
-        backgroundColor:
-          el.bills.length > 3
-            ? 'rgba(255,191,0, 0.3)'
-            : 'rgba(253,107,107, 0.3)',
-        borderColor:
-          el.bills.length > 3
-            ? 'rgba(253,107,107, 0.3)'
-            : 'rgba(255,191,0, 0.3)',
-      },
-      textStyle: {
-        color: '#000000',
-        fontWeight: 'bold',
-      },
-      containerStyle: {
-        width: el.bills.length > 3 ? 60 : 32,
-        height: el.bills.length > 3 ? 60 : 32,
-        marginTop: 3,
-        marginLeft:
-          el.bills.length > 3
-            ? Math.floor((43 - 43) / 2)
-            : Math.floor((43 - 32) / 2),
-        marginRight: Math.floor((43 - random_size) / 2),
-        backgroundColor:
-          el.bills.length > 3
-            ? 'rgba(253,107,107, 0.3)'
-            : 'rgba(255,191,0, 0.3)',
-        borderColor:
-          el.bills.length > 3 ? 'rgba(253,107,107, 1)' : 'rgba(255,191,0, 1)',
+        backgroundColor: 'rgba(253,107,107, 0.3)',
         borderWidth: 1,
-        borderRadius: 50,
+        borderColor: 'rgba(253,107,107, 1)',
       },
-    });
-  });
-  setCustomDatesStyles(auxCustomDays);
-  setChartValues(auxChartValues);
-  console.log(Math.random() * (12 - 9) + 9);
-}, [billDays]);
-
-const onDateChange = async datePicked => {
-  const Bills = await billDays.find(
-    e => e.day.date.format('MM-DD-yyyy') === datePicked.format('MM-DD-yyyy'),
-  );
-  if (!Bills || Bills.length < 1) {
-    setBillsAndDebt([]);
-  } else {
-    setBillsAndDebt(Bills.bills);
-  }
-};
+      textStyle: {color: 'black'}, // sets the font color
+      containerStyle: [], // extra styling for day container
+      allowDisabled: false, // allow custom style to apply to disabled dates
+    },
+    bills: [
+      {
+        title: 'Oil Station',
+        amount: 39.99,
+      },
+      {
+        title: 'Shopping',
+        amount: 45.99,
+      },
+      {
+        title: 'Food market',
+        amount: 15.45,
+      },
+      {
+        title: 'Bank',
+        amount: 19.99,
+      },
+    ],
+  },
+  {
+    day: {
+      date: moment()
+        .year(2022)
+        .month(10)
+        .date(Math.random() * 31),
+      // Set colors to date
+      style: {
+        backgroundColor: 'rgba(253,107,107, 0.3)',
+        borderWidth: 1,
+        borderColor: 'rgba(253,107,107, 1)',
+      },
+      textStyle: {color: 'black'}, // sets the font color
+      containerStyle: [], // extra styling for day container
+      allowDisabled: false, // allow custom style to apply to disabled dates
+    },
+    bills: [
+      {
+        title: 'Oil Station',
+        amount: 339.99,
+      },
+      {
+        title: 'Shopping',
+        amount: 65.99,
+      },
+    ],
+  },
+  {
+    day: {
+      date: moment()
+        .year(2022)
+        .month(10)
+        .date(Math.random() * 31),
+      // Set colors to date
+      style: {
+        backgroundColor: 'rgba(253,107,107, 0.3)',
+        borderWidth: 1,
+        borderColor: 'rgba(253,107,107, 1)',
+      },
+      textStyle: {color: 'black'}, // sets the font color
+      containerStyle: [], // extra styling for day container
+      allowDisabled: false, // allow custom style to apply to disabled dates
+    },
+    bills: [
+      {
+        title: 'Oil Station',
+        amount: 3.99,
+      },
+      {
+        title: 'Shopping',
+        amount: 4.99,
+      },
+      {
+        title: 'Food market',
+        amount: 1.45,
+      },
+      {
+        title: 'Bank',
+        amount: 1.99,
+      },
+      {
+        title: 'Food market',
+        amount: 435.45,
+      },
+      {
+        title: 'Bank',
+        amount: 193.99,
+      },
+    ],
+  },
+  {
+    day: {
+      date: moment()
+        .year(2022)
+        .month(10)
+        .date(Math.random() * 31),
+      // Set colors to date
+      style: {
+        backgroundColor: 'rgba(255,191,0, 0.3)',
+        borderWidth: 1,
+        borderColor: 'rgba(255,191,0, 1)',
+        width: 50,
+        height: 50,
+      },
+      textStyle: {color: 'black'}, // sets the font color
+      containerStyle: [], // extra styling for day container
+      allowDisabled: false, // allow custom style to apply to disabled dates
+    },
+    bills: [
+      {
+        title: 'Shopping',
+        amount: 2.99,
+      },
+    ],
+  },
+  {
+    day: {
+      date: moment()
+        .year(2022)
+        .month(10)
+        .date(Math.random() * 31),
+      // Set colors to date
+      style: {
+        backgroundColor: 'rgba(255,191,0, 0.3)',
+        borderWidth: 1,
+        borderColor: 'rgba(255,191,0, 1)',
+        width: 50,
+        height: 50,
+      },
+      textStyle: {color: 'black'}, // sets the font color
+      containerStyle: [], // extra styling for day container
+      allowDisabled: false, // allow custom style to apply to disabled dates
+    },
+    bills: [
+      {
+        title: 'Shopping',
+        amount: 2.99,
+      },
+    ],
+  },
+  {
+    day: {
+      date: new Date('25-10-2022'),
+      // Set colors to date
+      style: {
+        backgroundColor: 'rgba(255,191,0, 0.3)',
+        borderWidth: 1,
+        borderColor: 'rgba(255,191,0, 1)',
+        width: 50,
+        height: 50,
+      },
+      textStyle: {color: 'black'}, // sets the font color
+      containerStyle: [], // extra styling for day container
+      allowDisabled: false, // allow custom style to apply to disabled dates
+    },
+    bills: [
+      {
+        title: 'Shopping',
+        amount: 2.99,
+      },
+    ],
+  },
+];
