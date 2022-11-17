@@ -8,19 +8,18 @@
  * @format
  */
 
-import React, {useEffect, useState} from 'react';
-import dayjs from 'dayjs';
+import {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   useColorScheme,
-  View,
   useWindowDimensions,
+  View,
 } from 'react-native';
 
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Calendar from './src/Calendar/Calendar';
 
 const App = () => {
@@ -30,7 +29,7 @@ const App = () => {
   const [end, setEnd] = useState(undefined);
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkMode ? Colors.lighter : Colors.lighter,
   };
 
   return (

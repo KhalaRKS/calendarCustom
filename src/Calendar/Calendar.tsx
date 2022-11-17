@@ -16,7 +16,7 @@ interface Bills {
 const Calendar = (props: Props) => {
   return (
     <>
-      <SyncCalendars />
+      <SyncCalendars data={[]} paymentDeadlineColor={undefined} />
     </>
   );
 };
