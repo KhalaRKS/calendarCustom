@@ -7,3 +7,7 @@ export const getNextMonth = (date: Date) => {
 export const getFirstDayOfMonth = (date: Date) => {
   return moment(date).startOf('month').toDate();
 };
+
+export const getLastDayOfMonth = (date: Date) => {
+  return moment(date).endOf('month').toDate();
+};

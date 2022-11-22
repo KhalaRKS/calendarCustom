@@ -6,7 +6,11 @@ import {ItemCalendar} from '../../models/itemCalendar.interface';
 import moment, {Moment} from 'moment';
 import {DateChangedCallback} from 'react-native-calendar-picker';
 import {SELECTION_DATE} from '../../types/selectionDate.type';
-import {getNextMonth, getFirstDayOfMonth} from '../../helpers/date';
+import {
+  getNextMonth,
+  getFirstDayOfMonth,
+  getLastDayOfMonth,
+} from '../../helpers/date';
 
 interface Props {
   items?: ItemCalendar[];
@@ -66,7 +70,11 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
     setMinDateTwo(nextMonthFirstDay);
   };
 
-  const maxDateHanlder = () => {};
+  const maxDateHanlder = (date?: Date) => {
+    const nextMonth = getNextMonth(date || new Date());
+    const nextMonthLastDay = getLastDayOfMonth(nextMonth);
+    setMaxDateTwo(nextMonthLastDay);
+  };
 
   const onMonthChangeHandler: DateChangedCallback = (
     date: Moment,
@@ -74,12 +82,14 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
   ) => {
     initialDateHandler(date.toDate());
     minDateHanlder(date.toDate());
+    maxDateHanlder(date.toDate());
     onMonthChange && onMonthChange();
   };
 
   useEffect(() => {
     initialDateHandler();
     minDateHanlder();
+    maxDateHanlder();
   }, []);
 
   //
