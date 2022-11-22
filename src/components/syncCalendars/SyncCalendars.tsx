@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react';
 import useSingleCalendar from './hooks/useSingleCalendar';
 import CalendarPicker from 'react-native-calendar-picker';
 import {ItemCalendar} from '../../models/itemCalendar.interface';
+import adapterItem from './adapter/adapterItem';
+import {CustomDateStyle} from '../../models/customDateStyle.interface';
 
 interface Props {
   items?: ItemCalendar[];
@@ -10,7 +12,7 @@ interface Props {
 }
 
 const SyncCalendars = ({items, onMonthChange}: Props) => {
-  const [styles, setStyles] = useState(undefined);
+  const [styles, setStyles] = useState<CustomDateStyle[]>([]);
 
   const {
     initialDate: initialDateOne,
@@ -35,7 +37,10 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
   useEffect(() => {
     if (items) {
       // TODO: This is where we need to set the customDatesStyles for each calendar
-      setStyles(undefined);
+      const customStyles: CustomDateStyle[] = items.map(item =>
+        adapterItem(item),
+      );
+      setStyles(customStyles);
     }
   }, [items]);
 
