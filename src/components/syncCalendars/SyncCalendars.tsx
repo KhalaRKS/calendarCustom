@@ -3,6 +3,9 @@ import React, {useEffect, useState} from 'react';
 import useSingleCalendar from './hooks/useSingleCalendar';
 import CalendarPicker from 'react-native-calendar-picker';
 import {ItemCalendar} from '../../models/itemCalendar.interface';
+import moment, {Moment} from 'moment';
+import {DateChangedCallback} from 'react-native-calendar-picker';
+import {SELECTION_DATE} from '../../types/selectionDate.type';
 
 interface Props {
   items?: ItemCalendar[];
@@ -14,22 +17,20 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
 
   const {
     initialDate: initialDateOne,
+    setInitialDate: setInitialDateOne,
     minDate: minDateOne,
     maxDate: maxDateOne,
     selectedStartDate: selectedStartDateOne,
     selectedEndDate: selectedEndDateOne,
-    onDateChange: onDateChangeOne,
-    onMonthChange: onMonthChangeOne,
   } = useSingleCalendar();
 
   const {
     initialDate: initialDateTwo,
+    setInitialDate: setInitialDateTwo,
     minDate: minDateTwo,
     maxDate: maxDateTwo,
     selectedStartDate: selectedStartDateTwo,
     selectedEndDate: selectedEndDateTwo,
-    onDateChange: onDateChangeTwo,
-    onMonthChange: onMonthChangeTwo,
   } = useSingleCalendar();
 
   useEffect(() => {
@@ -38,6 +39,30 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
       setStyles(undefined);
     }
   }, [items]);
+
+  const initialDateHandler = (initialDate?: Date) => {
+    console.log('initialDateHandler', initialDate);
+    const today = initialDate || new Date();
+    const nextMonth = moment(today).add(1, 'month').toDate();
+    setInitialDateOne(today);
+    setInitialDateTwo(nextMonth);
+  };
+
+  const onMonthChangeHandler: DateChangedCallback = (
+    date: Moment,
+    type: SELECTION_DATE,
+  ) => {
+    const nextMonth = moment(date).add(1, 'month').toDate();
+    console.log('prevMonth', date, 'nextMonth', nextMonth);
+    initialDateHandler(nextMonth);
+  };
+
+  useEffect(() => {
+    initialDateHandler();
+  }, []);
+
+  const onPressCalendarOne = () => {};
+  const onPressCalendarTwo = () => {};
 
   return (
     <>
@@ -49,8 +74,8 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
         maxDate={maxDateOne}
         selectedStartDate={selectedStartDateOne}
         selectedEndDate={selectedEndDateOne}
-        onDateChange={onDateChangeOne}
-        onMonthChange={onMonthChangeOne}
+        onDateChange={undefined}
+        onMonthChange={onMonthChangeHandler}
         customDatesStyles={styles}
       />
       <CalendarPicker
@@ -61,8 +86,8 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
         maxDate={maxDateTwo}
         selectedStartDate={selectedStartDateTwo}
         selectedEndDate={selectedEndDateTwo}
-        onDateChange={onDateChangeTwo}
-        onMonthChange={onMonthChangeTwo}
+        onDateChange={undefined}
+        onMonthChange={undefined}
         customDatesStyles={styles}
       />
     </>

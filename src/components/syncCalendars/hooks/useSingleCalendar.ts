@@ -19,13 +19,13 @@ const useSingleCalendar = () => {
     CustomDateStyle[] | CustomDatesStylesFunc | undefined
   >(undefined);
 
-  const [onDateChange, setOnDateChange] = useState<
+  /*   const [onDateChange, setOnDateChange] = useState<
     DateChangedCallback | undefined
   >(undefined);
 
   const [onMonthChange, setOnMonthChange] = useState<
     DateChangedCallback | undefined
-  >(undefined);
+  >(undefined); */
 
   return {
     initialDate,
@@ -40,10 +40,10 @@ const useSingleCalendar = () => {
     setSelectedEndDate,
     customDatesStyles,
     setCustomDateStyles,
-    onDateChange,
+    /*     onDateChange,
     setOnDateChange,
     onMonthChange,
-    setOnMonthChange,
+    setOnMonthChange, */
   };
 };
 
