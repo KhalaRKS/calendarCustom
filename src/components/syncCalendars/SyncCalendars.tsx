@@ -86,10 +86,14 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
     onMonthChange && onMonthChange();
   };
 
-  useEffect(() => {
+  const initializeSyncCalendars = () => {
     initialDateHandler();
     minDateHanlder();
     maxDateHanlder();
+  };
+
+  useEffect(() => {
+    initializeSyncCalendars();
   }, []);
 
   //
