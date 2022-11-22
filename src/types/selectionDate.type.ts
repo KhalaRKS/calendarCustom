@@ -1,0 +1,1 @@
+export type SELECTION_DATE = 'START_DATE' | 'END_DATE';

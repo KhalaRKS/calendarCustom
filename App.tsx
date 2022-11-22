@@ -34,7 +34,7 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const onDateChange = (date, type) => {
+  const onDateChange = (date: any, type: string) => {
     console.log(date, type);
     setSelectedStartDate(date);
     console.log('Dayjs' + dayjs().date(31).toDate());
@@ -63,15 +63,14 @@ const App = () => {
           <CalendarPicker
             minDate={new Date()}
             onDateChange={(date, type) => onDateChange(date, type)}
-            previousTitle={''}
-            nextTitle={''}
+            previousTitle={'<'}
+            nextTitle={'>'}
             previousTitleStyle={styles.previousTitleStyle}
             selectedDayStyle={styles.selectedDayStyle}
             nextTitleStyle={styles.previousTitleStyle}
             customDatesStyles={customDatesStyles}
             dayLabelsWrapper={styles.dayLabelsWrapper}
-            todayBackgroundColor="#a0db8e"
-          />
+            todayBackgroundColor="#a0db8e"></CalendarPicker>
           <CalendarPicker
             onDateChange={(date, type) => onDateChange(date, type)}
             previousTitle={'<'}
@@ -81,8 +80,7 @@ const App = () => {
             selectedDayStyle={styles.selectedDayStyle}
             nextTitleStyle={styles.previousTitleStyle}
             customDatesStyles={customDatesStyles}
-            dayLabelsWrapper={styles.dayLabelsWrapper}
-          />
+            dayLabelsWrapper={styles.dayLabelsWrapper}></CalendarPicker>
         </View>
       </ScrollView>
     </SafeAreaView>
