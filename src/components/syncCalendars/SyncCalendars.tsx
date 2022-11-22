@@ -1,9 +1,17 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import useSingleCalendar from './hooks/useSingleCalendar';
 import CalendarPicker from 'react-native-calendar-picker';
+import {ItemCalendar} from '../../models/itemCalendar.interface';
 
-const SyncCalendars = () => {
+interface Props {
+  items?: ItemCalendar[];
+  onMonthChange?: () => void;
+}
+
+const SyncCalendars = ({items, onMonthChange}: Props) => {
+  const [styles, setStyles] = useState(undefined);
+
   const {
     initialDate: initialDateOne,
     minDate: minDateOne,
@@ -12,7 +20,6 @@ const SyncCalendars = () => {
     selectedEndDate: selectedEndDateOne,
     onDateChange: onDateChangeOne,
     onMonthChange: onMonthChangeOne,
-    customDatesStyles: customDatesStylesOne,
   } = useSingleCalendar();
 
   const {
@@ -23,8 +30,14 @@ const SyncCalendars = () => {
     selectedEndDate: selectedEndDateTwo,
     onDateChange: onDateChangeTwo,
     onMonthChange: onMonthChangeTwo,
-    customDatesStyles: customDatesStylesTwo,
   } = useSingleCalendar();
+
+  useEffect(() => {
+    if (items) {
+      // TODO: This is where we need to set the customDatesStyles for each calendar
+      setStyles(undefined);
+    }
+  }, [items]);
 
   return (
     <>
@@ -38,7 +51,7 @@ const SyncCalendars = () => {
         selectedEndDate={selectedEndDateOne}
         onDateChange={onDateChangeOne}
         onMonthChange={onMonthChangeOne}
-        customDatesStyles={customDatesStylesOne}
+        customDatesStyles={styles}
       />
       <CalendarPicker
         allowRangeSelection={true}
@@ -50,7 +63,7 @@ const SyncCalendars = () => {
         selectedEndDate={selectedEndDateTwo}
         onDateChange={onDateChangeTwo}
         onMonthChange={onMonthChangeTwo}
-        customDatesStyles={customDatesStylesTwo}
+        customDatesStyles={styles}
       />
     </>
   );

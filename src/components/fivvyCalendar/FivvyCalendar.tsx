@@ -4,14 +4,14 @@ import SyncCalendars from '../syncCalendars/SyncCalendars';
 import {ItemCalendar} from '../../models/itemCalendar.interface';
 
 interface Props {
-  items: ItemCalendar[];
+  items?: ItemCalendar[];
   onMonthChange?: () => void;
 }
 
 const FivvyCalendar = ({items, onMonthChange}: Props) => {
   return (
     <View>
-      <SyncCalendars />
+      <SyncCalendars items={items} onMonthChange={onMonthChange} />
     </View>
   );
 };
