@@ -6,6 +6,7 @@ import {ItemCalendar} from '../../models/itemCalendar.interface';
 import moment, {Moment} from 'moment';
 import {DateChangedCallback} from 'react-native-calendar-picker';
 import {SELECTION_DATE} from '../../types/selectionDate.type';
+import {getNextMonth} from '../../helpers/date';
 
 interface Props {
   items?: ItemCalendar[];
@@ -14,23 +15,34 @@ interface Props {
 
 const SyncCalendars = ({items, onMonthChange}: Props) => {
   const [styles, setStyles] = useState(undefined);
+  const [lastInitialDate, setLastInitialDate] = useState<Date | undefined>(
+    undefined,
+  );
 
   const {
     initialDate: initialDateOne,
     setInitialDate: setInitialDateOne,
     minDate: minDateOne,
+    setMinDate: setMinDateOne,
     maxDate: maxDateOne,
+    setMaxDate: setMaxDateOne,
     selectedStartDate: selectedStartDateOne,
+    setSelectedStartDate: setSelectedStartDateOne,
     selectedEndDate: selectedEndDateOne,
+    setSelectedEndDate: setSelectedEndDateOne,
   } = useSingleCalendar();
 
   const {
     initialDate: initialDateTwo,
     setInitialDate: setInitialDateTwo,
     minDate: minDateTwo,
+    setMinDate: setMinDateTwo,
     maxDate: maxDateTwo,
+    setMaxDate: setMaxDateTwo,
     selectedStartDate: selectedStartDateTwo,
+    setSelectedStartDate: setSelectedStartDateTwo,
     selectedEndDate: selectedEndDateTwo,
+    setSelectedEndDate: setSelectedEndDateTwo,
   } = useSingleCalendar();
 
   useEffect(() => {
@@ -40,29 +52,37 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
     }
   }, [items]);
 
+  // initial date sync
   const initialDateHandler = (initialDate?: Date) => {
-    console.log('initialDateHandler', initialDate);
     const today = initialDate || new Date();
-    const nextMonth = moment(today).add(1, 'month').toDate();
+    const nextMonth = getNextMonth(today);
     setInitialDateOne(today);
     setInitialDateTwo(nextMonth);
   };
+
+  const minDateHanlder = () => {};
+  const maxDateHanlder = () => {};
 
   const onMonthChangeHandler: DateChangedCallback = (
     date: Moment,
     type: SELECTION_DATE,
   ) => {
-    const nextMonth = moment(date).add(1, 'month').toDate();
-    console.log('prevMonth', date, 'nextMonth', nextMonth);
-    initialDateHandler(nextMonth);
+    initialDateHandler(date.toDate());
+    onMonthChange && onMonthChange();
   };
 
   useEffect(() => {
     initialDateHandler();
   }, []);
 
+  //
   const onPressCalendarOne = () => {};
   const onPressCalendarTwo = () => {};
+
+  const onDateChangeCalendarOne: DateChangedCallback = (
+    date: Moment,
+    type: SELECTION_DATE,
+  ) => {};
 
   return (
     <>
