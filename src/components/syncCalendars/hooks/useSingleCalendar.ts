@@ -4,8 +4,6 @@ import {
   CustomDateStyle,
   DateChangedCallback,
 } from 'react-native-calendar-picker';
-import {Moment} from 'moment';
-import {SELECTION_DATE} from '../../../types/selectionDate.type';
 
 const useSingleCalendar = () => {
   const [initialDate, setInitialDate] = useState<Date | undefined>(undefined);
