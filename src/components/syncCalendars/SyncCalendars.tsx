@@ -1,7 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import useSingleCalendar from './hooks/useSingleCalendar';
-import CalendarPicker from 'react-native-calendar-picker';
+import CalendarPicker, {
+  CustomDatesStylesFunc,
+} from 'react-native-calendar-picker';
 import {ItemCalendar} from '../../models/itemCalendar.interface';
 import moment, {Moment} from 'moment';
 import {DateChangedCallback} from 'react-native-calendar-picker';
@@ -12,6 +14,8 @@ import {
   getLastDayOfMonth,
 } from '../../helpers/date';
 import {useFivvyCalendarProvider} from '../../hooks/useFivvyCalendarProvider';
+import adapterItem from './adapter/adapterItem';
+import {CustomDateStyle} from '../../models/customDateStyle.interface';
 
 interface Props {
   items?: ItemCalendar[];
@@ -22,7 +26,7 @@ interface Props {
 const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
   const {start, end, setStart, setEnd} = useFivvyCalendarProvider();
 
-  const [styles, setStyles] = useState(undefined);
+  const [styles, setStyles] = useState<any>(undefined);
 
   const {
     initialDate: initialDateOne,
@@ -53,7 +57,10 @@ const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
   useEffect(() => {
     if (items) {
       // TODO: This is where we need to set the customDatesStyles for each calendar
-      setStyles(undefined);
+      const customStyles: CustomDateStyle[] = items.map(item =>
+        adapterItem(item),
+      );
+      setStyles(customStyles);
     }
   }, [items]);
 
