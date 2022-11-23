@@ -1,11 +1,17 @@
 import React from 'react';
 import FivvyCalendar from './src/components/fivvyCalendar/FivvyCalendar';
-import {View} from 'react-native';
+import {Text, View} from 'react-native';
+import useFivvyCalendar from './src/components/fivvyCalendar/hooks/useFivvyCalendar';
 
 const App = () => {
   return (
     <View>
-      <FivvyCalendar />
+      <Text></Text>
+      <FivvyCalendar
+        onSelectDate={(start, end) => {
+          console.log(`start: ${start}, end: ${end}`);
+        }}
+      />
     </View>
   );
 };

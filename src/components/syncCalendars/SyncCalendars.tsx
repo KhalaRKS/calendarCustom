@@ -11,19 +11,18 @@ import {
   getFirstDayOfMonth,
   getLastDayOfMonth,
 } from '../../helpers/date';
+import {useFivvyCalendarProvider} from '../../hooks/useFivvyCalendarProvider';
 
 interface Props {
   items?: ItemCalendar[];
   onMonthChange?: () => void;
+  onSelectDate?: (start: Date | undefined, end: Date | undefined) => void;
 }
 
-const SyncCalendars = ({items, onMonthChange}: Props) => {
+const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
+  const {start, end, setStart, setEnd} = useFivvyCalendarProvider();
+
   const [styles, setStyles] = useState(undefined);
-  const [lastInitialDate, setLastInitialDate] = useState<Date | undefined>(
-    undefined,
-  );
-  const [start, setStart] = useState<Date | undefined>(undefined);
-  const [end, setEnd] = useState<Date | undefined>(undefined);
 
   const {
     initialDate: initialDateOne,
@@ -106,6 +105,11 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
       setStart(date.toDate());
       setSelectedStartDateOne(date.toDate());
       setSelectedStartDateTwo(date.toDate());
+
+      if (onSelectDate) {
+        onSelectDate(date.toDate(), undefined);
+      }
+
       return;
     }
 
@@ -114,6 +118,11 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
       setEnd(date.toDate());
       setSelectedEndDateOne(date.toDate());
       setSelectedEndDateTwo(date.toDate());
+
+      if (onSelectDate) {
+        onSelectDate(start, date.toDate());
+      }
+
       return;
     }
 
@@ -124,6 +133,11 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
       setSelectedStartDateTwo(undefined);
       setSelectedEndDateOne(undefined);
       setSelectedEndDateTwo(undefined);
+
+      if (onSelectDate) {
+        onSelectDate(undefined, undefined);
+      }
+
       return;
     }
   };
@@ -137,6 +151,11 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
       setStart(date.toDate());
       setSelectedStartDateOne(date.toDate());
       setSelectedStartDateTwo(date.toDate());
+
+      if (onSelectDate) {
+        onSelectDate(date.toDate(), undefined);
+      }
+
       return;
     }
 
@@ -145,6 +164,11 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
       setEnd(date.toDate());
       setSelectedEndDateOne(date.toDate());
       setSelectedEndDateTwo(date.toDate());
+
+      if (onSelectDate) {
+        onSelectDate(start, date.toDate());
+      }
+
       return;
     }
 
@@ -155,6 +179,11 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
       setSelectedStartDateTwo(undefined);
       setSelectedEndDateOne(undefined);
       setSelectedEndDateTwo(undefined);
+
+      if (onSelectDate) {
+        onSelectDate(undefined, undefined);
+      }
+
       return;
     }
   };
