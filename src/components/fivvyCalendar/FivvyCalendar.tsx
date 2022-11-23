@@ -2,6 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import SyncCalendars from '../syncCalendars/SyncCalendars';
 import {ItemCalendar} from '../../models/itemCalendar.interface';
+import FivvyCalendarProvider from '../../context/FivvyCalendarProvider';
 
 interface Props {
   items?: ItemCalendar[];
@@ -10,9 +11,9 @@ interface Props {
 
 const FivvyCalendar = ({items, onMonthChange}: Props) => {
   return (
-    <View>
+    <FivvyCalendarProvider>
       <SyncCalendars items={items} onMonthChange={onMonthChange} />
-    </View>
+    </FivvyCalendarProvider>
   );
 };
 

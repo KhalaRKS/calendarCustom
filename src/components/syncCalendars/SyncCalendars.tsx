@@ -22,6 +22,8 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
   const [lastInitialDate, setLastInitialDate] = useState<Date | undefined>(
     undefined,
   );
+  const [start, setStart] = useState<Date | undefined>(undefined);
+  const [end, setEnd] = useState<Date | undefined>(undefined);
 
   const {
     initialDate: initialDateOne,
@@ -97,13 +99,79 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
   }, []);
 
   //
-  const onPressCalendarOne = () => {};
-  const onPressCalendarTwo = () => {};
+
+  const onPressCalendarOne = (date: Moment) => {
+    // si no hay fecha de inicio, se setea la fecha seleccionada
+    if (!start && !end) {
+      setStart(date.toDate());
+      setSelectedStartDateOne(date.toDate());
+      setSelectedStartDateTwo(date.toDate());
+      return;
+    }
+
+    if (start && !end) {
+      // si hay fecha de inicio, se setea la fecha de fin
+      setEnd(date.toDate());
+      setSelectedEndDateOne(date.toDate());
+      setSelectedEndDateTwo(date.toDate());
+      return;
+    }
+
+    if (start && end) {
+      setStart(undefined);
+      setEnd(undefined);
+      setSelectedStartDateOne(undefined);
+      setSelectedStartDateTwo(undefined);
+      setSelectedEndDateOne(undefined);
+      setSelectedEndDateTwo(undefined);
+      return;
+    }
+  };
+
+  const onPressCalendarTwo = (date: Moment) => {
+    if (!start && !end) {
+      // mover el calendario 1 a la fecha seleccionada
+      initialDateHandler(date.toDate());
+      minDateHanlder(date.toDate());
+      maxDateHanlder(date.toDate());
+      setStart(date.toDate());
+      setSelectedStartDateOne(date.toDate());
+      setSelectedStartDateTwo(date.toDate());
+      return;
+    }
+
+    if (start && !end) {
+      // si hay fecha de inicio, se setea la fecha de fin
+      setEnd(date.toDate());
+      setSelectedEndDateOne(date.toDate());
+      setSelectedEndDateTwo(date.toDate());
+      return;
+    }
+
+    if (start && end) {
+      setStart(undefined);
+      setEnd(undefined);
+      setSelectedStartDateOne(undefined);
+      setSelectedStartDateTwo(undefined);
+      setSelectedEndDateOne(undefined);
+      setSelectedEndDateTwo(undefined);
+      return;
+    }
+  };
 
   const onDateChangeCalendarOne: DateChangedCallback = (
     date: Moment,
     type: SELECTION_DATE,
-  ) => {};
+  ) => {
+    onPressCalendarOne(date);
+  };
+
+  const onDateChangeCalendarTwo: DateChangedCallback = (
+    date: Moment,
+    type: SELECTION_DATE,
+  ) => {
+    onPressCalendarTwo(date);
+  };
 
   return (
     <>
@@ -115,7 +183,7 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
         maxDate={maxDateOne}
         selectedStartDate={selectedStartDateOne}
         selectedEndDate={selectedEndDateOne}
-        onDateChange={undefined}
+        onDateChange={onDateChangeCalendarOne}
         onMonthChange={onMonthChangeHandler}
         customDatesStyles={styles}
       />
@@ -127,7 +195,7 @@ const SyncCalendars = ({items, onMonthChange}: Props) => {
         maxDate={maxDateTwo}
         selectedStartDate={selectedStartDateTwo}
         selectedEndDate={selectedEndDateTwo}
-        onDateChange={undefined}
+        onDateChange={onDateChangeCalendarTwo}
         onMonthChange={undefined}
         customDatesStyles={styles}
       />
