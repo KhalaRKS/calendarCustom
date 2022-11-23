@@ -6,7 +6,6 @@ import useFivvyCalendar from './src/components/fivvyCalendar/hooks/useFivvyCalen
 const App = () => {
   return (
     <View>
-      <Text></Text>
       <FivvyCalendar
         onSelectDate={(start, end) => {
           console.log(`start: ${start}, end: ${end}`);

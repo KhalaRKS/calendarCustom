@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import useSingleCalendar from './hooks/useSingleCalendar';
 import CalendarPicker, {
   CustomDatesStylesFunc,
@@ -25,8 +25,8 @@ interface Props {
 
 const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
   const {start, end, setStart, setEnd} = useFivvyCalendarProvider();
-
   const [styles, setStyles] = useState<any>(undefined);
+  const [loading, setLoadgin] = useState<boolean>(false);
 
   const {
     initialDate: initialDateOne,
@@ -107,6 +107,7 @@ const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
   //
 
   const onPressCalendarOne = (date: Moment) => {
+    setLoadgin(true);
     // si no hay fecha de inicio, se setea la fecha seleccionada
     if (!start && !end) {
       setStart(date.toDate());
@@ -150,6 +151,8 @@ const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
   };
 
   const onPressCalendarTwo = (date: Moment) => {
+    setLoadgin(true);
+
     if (!start && !end) {
       // mover el calendario 1 a la fecha seleccionada
       initialDateHandler(date.toDate());
@@ -169,8 +172,8 @@ const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
     if (start && !end) {
       // si hay fecha de inicio, se setea la fecha de fin
       setEnd(date.toDate());
-      setSelectedEndDateOne(date.toDate());
       setSelectedEndDateTwo(date.toDate());
+      setSelectedEndDateOne(date.toDate());
 
       if (onSelectDate) {
         onSelectDate(start, date.toDate());
@@ -209,32 +212,46 @@ const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
     onPressCalendarTwo(date);
   };
 
+  useEffect(() => {
+    if (loading) {
+      setLoadgin(false);
+    }
+  }, [loading]);
+
   return (
     <>
-      <CalendarPicker
-        allowRangeSelection={true}
-        restrictMonthNavigation={true}
-        initialDate={initialDateOne}
-        minDate={minDateOne}
-        maxDate={maxDateOne}
-        selectedStartDate={selectedStartDateOne}
-        selectedEndDate={selectedEndDateOne}
-        onDateChange={onDateChangeCalendarOne}
-        onMonthChange={onMonthChangeHandler}
-        customDatesStyles={styles}
-      />
-      <CalendarPicker
-        allowRangeSelection={true}
-        restrictMonthNavigation={true}
-        initialDate={initialDateTwo}
-        minDate={minDateTwo}
-        maxDate={maxDateTwo}
-        selectedStartDate={selectedStartDateTwo}
-        selectedEndDate={selectedEndDateTwo}
-        onDateChange={onDateChangeCalendarTwo}
-        onMonthChange={undefined}
-        customDatesStyles={styles}
-      />
+      {loading ? (
+        <View>
+          <Text>LOADING</Text>
+        </View>
+      ) : (
+        <>
+          <CalendarPicker
+            allowRangeSelection={true}
+            restrictMonthNavigation={true}
+            initialDate={initialDateOne}
+            minDate={minDateOne}
+            maxDate={maxDateOne}
+            selectedStartDate={selectedStartDateOne}
+            selectedEndDate={selectedEndDateOne}
+            onDateChange={onDateChangeCalendarOne}
+            onMonthChange={onMonthChangeHandler}
+            customDatesStyles={styles}
+          />
+          <CalendarPicker
+            allowRangeSelection={true}
+            restrictMonthNavigation={true}
+            initialDate={initialDateTwo}
+            minDate={minDateTwo}
+            maxDate={maxDateTwo}
+            selectedStartDate={selectedStartDateTwo}
+            selectedEndDate={selectedEndDateTwo}
+            onDateChange={onDateChangeCalendarTwo}
+            onMonthChange={undefined}
+            customDatesStyles={styles}
+          />
+        </>
+      )}
     </>
   );
 };

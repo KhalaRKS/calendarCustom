@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import SyncCalendars from '../syncCalendars/SyncCalendars';
 import {ItemCalendar} from '../../models/itemCalendar.interface';
