@@ -1,1 +1,5 @@
-export interface Liabilities {}
+export interface Liabilities {
+    title: string,
+    amount: number,
+    
+}
