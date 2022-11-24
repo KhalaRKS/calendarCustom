@@ -8,8 +8,13 @@ import {SelectedRangeStyle} from '../../models/selectedRangeStyle.interface';
 interface Props {
   items?: ItemCalendar[];
   onMonthChange?: () => void;
-  onSelectDate?: (start: Date | undefined, end: Date | undefined) => void;
+  onSelectDate?: (
+    start: Date | undefined,
+    end: Date | undefined,
+    item: any | any[],
+  ) => void;
   selectedRangeColor?: string;
+  enabledRageSelection?: boolean;
 }
 
 const FivvyCalendar = ({
@@ -17,6 +22,7 @@ const FivvyCalendar = ({
   onMonthChange,
   onSelectDate,
   selectedRangeColor,
+  enabledRageSelection,
 }: Props) => {
   return (
     <FivvyCalendarProvider>
@@ -25,6 +31,7 @@ const FivvyCalendar = ({
         onMonthChange={onMonthChange}
         onSelectDate={onSelectDate}
         selectedRangeColor={selectedRangeColor}
+        enabledRangeSelection={enabledRageSelection}
       />
     </FivvyCalendarProvider>
   );

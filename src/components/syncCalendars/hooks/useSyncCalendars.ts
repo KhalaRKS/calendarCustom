@@ -14,14 +14,17 @@ import {adapterItem} from '../adapters/adapterItem';
 import {CustomDateStyle} from '../../../models/customDateStyle.interface';
 import {ItemCalendar} from '../../../models/itemCalendar.interface';
 import {IItemaAdapted} from '../../../models/itemsAdapted.interface';
+import moment from 'moment';
 
 const useSyncCalendars = (
   onSelectDate?: (
     start: Date | undefined,
     end: Date | undefined,
+    info?: any[] | any,
   ) => void | undefined,
   onMonthChange?: (() => void) | undefined,
   items?: ItemCalendar[],
+  enabledRangeSelection?: boolean,
 ) => {
   const {start, end, setStart, setEnd} = useFivvyCalendarProvider();
 
@@ -103,8 +106,10 @@ const useSyncCalendars = (
       return;
     }
 
-    const dateInfo = dates.find(
-      item => item.item.date.getTime() === date.getTime(),
+    const dateInfo = items?.filter(
+      item =>
+        moment(item.date).format('YYYY-MM-DD') ===
+        moment(date).format('YYYY-MM-DD'),
     );
 
     return dateInfo;
@@ -208,14 +213,36 @@ const useSyncCalendars = (
     date: Moment,
     type: SELECTION_DATE,
   ) => {
-    onPressCalendarOne(date);
+    if (enabledRangeSelection) {
+      onPressCalendarOne(date);
+      return;
+    }
+
+    if (onSelectDate) {
+      const dateInfo = getDateInfo(date.toDate());
+      onSelectDate(
+        date.toDate(),
+        date.toDate(),
+        dateInfo?.map(item => {
+          return {
+            title: item.title,
+            description: item.description,
+            value: item.value,
+            date: item.date,
+          };
+        }),
+      );
+    }
   };
 
   const onDateChangeCalendarTwo: DateChangedCallback = (
     date: Moment,
     type: SELECTION_DATE,
   ) => {
-    onPressCalendarTwo(date);
+    if (enabledRangeSelection) {
+      onPressCalendarTwo(date);
+      return;
+    }
   };
 
   useEffect(() => {

@@ -7,19 +7,25 @@ const App = () => {
   return (
     <View style={styles.viewStyle}>
       <FivvyCalendar
-        onSelectDate={(start, end) => {
+        onSelectDate={(start, end, item) => {
           console.log(`start: ${start}, end: ${end}`);
+          console.log(item);
+        }}
+        onMonthChange={() => {
+          console.log('cambie de mes');
         }}
         items={[
           {
             date: new Date('2022-11-25'),
             backgroundColor: 'red',
             borderColor: 'red',
+            title: 'hola',
           },
           {
             date: new Date('2022-11-25'),
             backgroundColor: 'red',
             borderColor: 'red',
+            title: 'mundo',
           },
           {
             date: new Date('2022-11-20'),

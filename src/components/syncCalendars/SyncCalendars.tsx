@@ -8,7 +8,12 @@ interface Props {
   items?: ItemCalendar[];
   selectedRangeColor?: string;
   onMonthChange?: () => void;
-  onSelectDate?: (start: Date | undefined, end: Date | undefined) => void;
+  onSelectDate?: (
+    start: Date | undefined,
+    end: Date | undefined,
+    data: any | any[],
+  ) => void;
+  enabledRangeSelection?: boolean;
 }
 
 const SyncCalendars = ({
@@ -16,6 +21,7 @@ const SyncCalendars = ({
   onMonthChange,
   onSelectDate,
   selectedRangeColor,
+  enabledRangeSelection = true,
 }: Props) => {
   const {
     initialDateOne,
@@ -33,7 +39,12 @@ const SyncCalendars = ({
     onDateChangeCalendarTwo,
     onMonthChangeHandler,
     styles,
-  } = useSyncCalendars(onSelectDate, onMonthChange, items);
+  } = useSyncCalendars(
+    onSelectDate,
+    onMonthChange,
+    items,
+    enabledRangeSelection,
+  );
 
   return (
     <>
@@ -44,7 +55,7 @@ const SyncCalendars = ({
       ) : (
         <>
           <CalendarPicker
-            allowRangeSelection={true}
+            allowRangeSelection={enabledRangeSelection}
             restrictMonthNavigation={true}
             initialDate={initialDateOne}
             minDate={minDateOne}
@@ -62,9 +73,14 @@ const SyncCalendars = ({
               borderRadius: 0,
               borderWidth: 0,
             }}
+            selectedDayStyle={{
+              backgroundColor: enabledRangeSelection
+                ? selectedRangeColor
+                : 'transparent',
+            }}
           />
           <CalendarPicker
-            allowRangeSelection={true}
+            allowRangeSelection={enabledRangeSelection}
             restrictMonthNavigation={true}
             initialDate={initialDateTwo}
             minDate={minDateTwo}
@@ -81,6 +97,11 @@ const SyncCalendars = ({
               transform: [{scaleX: 1}, {scaleY: 1}],
               borderRadius: 0,
               borderWidth: 0,
+            }}
+            selectedDayStyle={{
+              backgroundColor: enabledRangeSelection
+                ? selectedRangeColor
+                : 'transparent',
             }}
           />
         </>
