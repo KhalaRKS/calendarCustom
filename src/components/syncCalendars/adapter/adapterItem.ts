@@ -14,8 +14,6 @@ export default function adapterItem(item: ItemCalendar): CustomDateStyle {
     textStyle: {color: 'black'},
     containerStyle: {
       position: 'relative',
-      width: item.liabilities ? (item.liabilities?.length > 3 ? 50 : 32) : 32,
-      height: item.liabilities ? (item.liabilities?.length > 3 ? 50 : 32) : 32,
     },
 
     allowDisabled: false,
