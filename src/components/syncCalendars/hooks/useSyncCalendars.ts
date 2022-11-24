@@ -29,7 +29,6 @@ const useSyncCalendars = (
   const {start, end, setStart, setEnd} = useFivvyCalendarProvider();
 
   const [styles, setStyles] = useState<any>(undefined);
-  const [dates, setDates] = useState<IItemaAdapted[]>([]);
 
   const [loading, setLoadgin] = useState<boolean>(false);
 
@@ -259,7 +258,6 @@ const useSyncCalendars = (
       });
 
       setStyles(customDatesStyles);
-      setDates(itemsAdapted);
     }
   }, [items]);
 
