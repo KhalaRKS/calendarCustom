@@ -9,6 +9,11 @@ import {
 import {DateChangedCallback} from 'react-native-calendar-picker';
 import {Moment} from 'moment';
 import {SELECTION_DATE} from '../../../types/selectionDate.type';
+import adapterItemStyle from '../adapters/adapterItemStyle';
+import {adapterItem} from '../adapters/adapterItem';
+import {CustomDateStyle} from '../../../models/customDateStyle.interface';
+import {ItemCalendar} from '../../../models/itemCalendar.interface';
+import {IItemaAdapted} from '../../../models/itemsAdapted.interface';
 
 const useSyncCalendars = (
   onSelectDate?: (
@@ -16,8 +21,12 @@ const useSyncCalendars = (
     end: Date | undefined,
   ) => void | undefined,
   onMonthChange?: (() => void) | undefined,
+  items?: ItemCalendar[],
 ) => {
   const {start, end, setStart, setEnd} = useFivvyCalendarProvider();
+
+  const [styles, setStyles] = useState<any>(undefined);
+  const [dates, setDates] = useState<IItemaAdapted[]>([]);
 
   const [loading, setLoadgin] = useState<boolean>(false);
 
@@ -77,15 +86,29 @@ const useSyncCalendars = (
     onMonthChange && onMonthChange();
   };
 
-  const initializeSyncCalendars = () => {
-    initialDateHandler();
-    minDateHanlder();
-    maxDateHanlder();
+  const initializeSyncCalendars = (date?: Date) => {
+    initialDateHandler(date);
+    minDateHanlder(date);
+    maxDateHanlder(date);
   };
 
   useEffect(() => {
     initializeSyncCalendars();
   }, []);
+
+  //
+
+  const getDateInfo = (date?: Date) => {
+    if (!date) {
+      return;
+    }
+
+    const dateInfo = dates.find(
+      item => item.item.date.getTime() === date.getTime(),
+    );
+
+    return dateInfo;
+  };
 
   //
 
@@ -201,6 +224,18 @@ const useSyncCalendars = (
     }
   }, [loading]);
 
+  useEffect(() => {
+    if (items) {
+      const itemsAdapted = adapterItem(items);
+      const customDatesStyles: CustomDateStyle[] = itemsAdapted.map(item => {
+        return adapterItemStyle(item.item, item.quantity);
+      });
+
+      setStyles(customDatesStyles);
+      setDates(itemsAdapted);
+    }
+  }, [items]);
+
   return {
     initialDateOne,
     initialDateTwo,
@@ -215,6 +250,7 @@ const useSyncCalendars = (
     onMonthChangeHandler,
     onDateChangeCalendarOne,
     onDateChangeCalendarTwo,
+    styles,
     loading,
   };
 };

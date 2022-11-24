@@ -2,17 +2,21 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CalendarPicker from 'react-native-calendar-picker';
 import {ItemCalendar} from '../../models/itemCalendar.interface';
-import adapterItem from './adapter/adapterItem';
-import {CustomDateStyle} from '../../models/customDateStyle.interface';
 import useSyncCalendars from './hooks/useSyncCalendars';
 
 interface Props {
   items?: ItemCalendar[];
+  selectedRangeColor?: string;
   onMonthChange?: () => void;
   onSelectDate?: (start: Date | undefined, end: Date | undefined) => void;
 }
 
-const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
+const SyncCalendars = ({
+  items,
+  onMonthChange,
+  onSelectDate,
+  selectedRangeColor,
+}: Props) => {
   const {
     initialDateOne,
     initialDateTwo,
@@ -28,19 +32,8 @@ const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
     onDateChangeCalendarOne,
     onDateChangeCalendarTwo,
     onMonthChangeHandler,
-  } = useSyncCalendars(onSelectDate, onMonthChange);
-
-  const [styles, setStyles] = useState<any>(undefined);
-
-  useEffect(() => {
-    if (items) {
-      // TODO: This is where we need to set the customDatesStyles for each calendar
-      const customStyles: CustomDateStyle[] = items.map(item =>
-        adapterItem(item),
-      );
-      setStyles(customStyles);
-    }
-  }, [items]);
+    styles,
+  } = useSyncCalendars(onSelectDate, onMonthChange, items);
 
   return (
     <>
@@ -61,6 +54,14 @@ const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
             onDateChange={onDateChangeCalendarOne}
             onMonthChange={onMonthChangeHandler}
             customDatesStyles={styles}
+            selectedRangeStyle={{
+              backgroundColor: selectedRangeColor
+                ? selectedRangeColor
+                : '#3498eb',
+              transform: [{scaleX: 1}, {scaleY: 1}],
+              borderRadius: 0,
+              borderWidth: 0,
+            }}
           />
           <CalendarPicker
             allowRangeSelection={true}
@@ -73,6 +74,14 @@ const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
             onDateChange={onDateChangeCalendarTwo}
             onMonthChange={undefined}
             customDatesStyles={styles}
+            selectedRangeStyle={{
+              backgroundColor: selectedRangeColor
+                ? selectedRangeColor
+                : '#3498eb',
+              transform: [{scaleX: 1}, {scaleY: 1}],
+              borderRadius: 0,
+              borderWidth: 0,
+            }}
           />
         </>
       )}
