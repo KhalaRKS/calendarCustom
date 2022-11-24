@@ -1,17 +1,11 @@
 import {Offers} from './offers.interface';
 import {Liabilities} from './liabilities.interface';
+import {Moment} from 'moment';
 export interface CustomDateStyle {
-  day: DateAtributes;
-  liabilities: Liabilities[] | [];
-  offers: Offers[] | [];
-}
-
-interface DateAtributes {
-  date: Date;
+  date: Moment;
   style: DateStyles;
-  textStyle: DateTextStyle;
-  containerStyle?: any[];
-  allowDisabled: boolean;
+  liabilities?: Liabilities[];
+  offers?: Offers[];
 }
 
 interface DateStyles {

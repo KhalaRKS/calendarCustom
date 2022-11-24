@@ -258,4 +258,10 @@ const SyncCalendars = ({items, onMonthChange, onSelectDate}: Props) => {
 
 export default SyncCalendars;
 
-const styles = StyleSheet.create({});
+const style = StyleSheet.create({
+  rangeStyle: {
+    backgroundColor: '#009EFF',
+    borderColor: '#009EFF',
+    borderWidth: 1,
+  },
+});

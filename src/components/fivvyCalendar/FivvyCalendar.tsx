@@ -5,7 +5,7 @@ import {ItemCalendar} from '../../models/itemCalendar.interface';
 import FivvyCalendarProvider from '../../context/FivvyCalendarProvider';
 
 interface Props {
-  items?: ItemCalendar[];
+  items?: any[];
   onMonthChange?: () => void;
   onSelectDate?: (start: Date | undefined, end: Date | undefined) => void;
 }

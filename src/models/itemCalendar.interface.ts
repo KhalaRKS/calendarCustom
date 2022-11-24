@@ -1,8 +1,9 @@
+import {Moment} from 'moment';
 import {Liabilities} from './liabilities.interface';
 import {Offers} from './offers.interface';
 
 export interface ItemCalendar {
-  date: Date;
+  date: Moment;
   backgroundColor: string;
   borderColor: string;
   titulo?: string;
