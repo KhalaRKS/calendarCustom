@@ -11,10 +11,10 @@ interface Props {
   onSelectDate?: (
     start: Date | undefined,
     end: Date | undefined,
-    item: any | any[],
+    items: any[],
   ) => void;
   selectedRangeColor?: string;
-  enabledRageSelection?: boolean;
+  disabledRageSelection?: boolean;
 }
 
 const FivvyCalendar = ({
@@ -22,7 +22,7 @@ const FivvyCalendar = ({
   onMonthChange,
   onSelectDate,
   selectedRangeColor,
-  enabledRageSelection,
+  disabledRageSelection,
 }: Props) => {
   return (
     <FivvyCalendarProvider>
@@ -31,7 +31,7 @@ const FivvyCalendar = ({
         onMonthChange={onMonthChange}
         onSelectDate={onSelectDate}
         selectedRangeColor={selectedRangeColor}
-        enabledRangeSelection={enabledRageSelection}
+        disabledRageSelection={disabledRageSelection}
       />
     </FivvyCalendarProvider>
   );

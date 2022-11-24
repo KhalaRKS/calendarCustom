@@ -11,9 +11,9 @@ interface Props {
   onSelectDate?: (
     start: Date | undefined,
     end: Date | undefined,
-    data: any | any[],
+    items: any[],
   ) => void;
-  enabledRangeSelection?: boolean;
+  disabledRageSelection?: boolean;
 }
 
 const SyncCalendars = ({
@@ -21,7 +21,7 @@ const SyncCalendars = ({
   onMonthChange,
   onSelectDate,
   selectedRangeColor,
-  enabledRangeSelection = true,
+  disabledRageSelection = false,
 }: Props) => {
   const {
     initialDateOne,
@@ -43,7 +43,7 @@ const SyncCalendars = ({
     onSelectDate,
     onMonthChange,
     items,
-    enabledRangeSelection,
+    disabledRageSelection,
   );
 
   return (
@@ -55,7 +55,7 @@ const SyncCalendars = ({
       ) : (
         <>
           <CalendarPicker
-            allowRangeSelection={enabledRangeSelection}
+            allowRangeSelection={!disabledRageSelection}
             restrictMonthNavigation={true}
             initialDate={initialDateOne}
             minDate={minDateOne}
@@ -74,13 +74,13 @@ const SyncCalendars = ({
               borderWidth: 0,
             }}
             selectedDayStyle={{
-              backgroundColor: enabledRangeSelection
+              backgroundColor: !disabledRageSelection
                 ? selectedRangeColor
                 : 'transparent',
             }}
           />
           <CalendarPicker
-            allowRangeSelection={enabledRangeSelection}
+            allowRangeSelection={!disabledRageSelection}
             restrictMonthNavigation={true}
             initialDate={initialDateTwo}
             minDate={minDateTwo}
@@ -99,7 +99,7 @@ const SyncCalendars = ({
               borderWidth: 0,
             }}
             selectedDayStyle={{
-              backgroundColor: enabledRangeSelection
+              backgroundColor: !disabledRageSelection
                 ? selectedRangeColor
                 : 'transparent',
             }}

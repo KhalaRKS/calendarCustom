@@ -20,11 +20,11 @@ const useSyncCalendars = (
   onSelectDate?: (
     start: Date | undefined,
     end: Date | undefined,
-    info?: any[] | any,
+    item?: any[] | any,
   ) => void | undefined,
   onMonthChange?: (() => void) | undefined,
   items?: ItemCalendar[],
-  enabledRangeSelection?: boolean,
+  disabledRageSelection?: boolean,
 ) => {
   const {start, end, setStart, setEnd} = useFivvyCalendarProvider();
 
@@ -212,7 +212,7 @@ const useSyncCalendars = (
     date: Moment,
     type: SELECTION_DATE,
   ) => {
-    if (enabledRangeSelection) {
+    if (!disabledRageSelection) {
       onPressCalendarOne(date);
       return;
     }
@@ -228,6 +228,7 @@ const useSyncCalendars = (
             description: item.description,
             value: item.value,
             date: item.date,
+            cb: item.callback,
           };
         }),
       );
@@ -238,9 +239,26 @@ const useSyncCalendars = (
     date: Moment,
     type: SELECTION_DATE,
   ) => {
-    if (enabledRangeSelection) {
+    if (!disabledRageSelection) {
       onPressCalendarTwo(date);
       return;
+    }
+
+    if (onSelectDate) {
+      const dateInfo = getDateInfo(date.toDate());
+      onSelectDate(
+        date.toDate(),
+        date.toDate(),
+        dateInfo?.map(item => {
+          return {
+            title: item.title,
+            description: item.description,
+            value: item.value,
+            date: item.date,
+            cb: item.callback,
+          };
+        }),
+      );
     }
   };
 
