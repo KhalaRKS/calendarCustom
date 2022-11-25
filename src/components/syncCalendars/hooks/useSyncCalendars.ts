@@ -214,14 +214,14 @@ const useSyncCalendars = (
   ) => {
     if (!disabledRageSelection) {
       onPressCalendarOne(date);
-      return;
+      //return;
     }
 
     if (onSelectDate) {
-      const dateInfo = getDateInfo(date.toDate());
+      const dateInfo = getDateInfo(date && date.toDate());
       onSelectDate(
-        date.toDate(),
-        date.toDate(),
+        date && date.toDate(),
+        date && date.toDate(),
         dateInfo?.map(item => {
           return {
             title: item.title,
@@ -241,14 +241,14 @@ const useSyncCalendars = (
   ) => {
     if (!disabledRageSelection) {
       onPressCalendarTwo(date);
-      return;
+      //return;
     }
 
     if (onSelectDate) {
-      const dateInfo = getDateInfo(date.toDate());
+      const dateInfo = getDateInfo(date && date.toDate());
       onSelectDate(
-        date.toDate(),
-        date.toDate(),
+        date && date.toDate(),
+        date && date.toDate(),
         dateInfo?.map(item => {
           return {
             title: item.title,
