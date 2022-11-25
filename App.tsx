@@ -9,40 +9,39 @@ const App = () => {
         onSelectDate={(start, end, items) => {
           console.log(`start: ${start}, end: ${end}`);
 
-          items.forEach(item => {
-            console.log(item.title);
+          items?.forEach(item => {
+            console.log(item?.title);
           });
         }}
         onMonthChange={() => {
           console.log('cambie de mes');
         }}
-        disabledRageSelection
         items={[
           {
             date: new Date('2022-11-25'),
-            backgroundColor: 'red',
+            backgroundColor: 'rgba(210, 100, 200, 0.2)',
             borderColor: 'red',
             title: 'hola',
           },
           {
             date: new Date('2022-11-25'),
-            backgroundColor: 'red',
+            backgroundColor: 'yellow',
             borderColor: 'red',
             title: 'mundo',
           },
           {
             date: new Date('2022-11-20'),
-            backgroundColor: 'red',
+            backgroundColor: 'rgba(210, 100, 200, 0.2)',
             borderColor: 'red',
           },
           {
             date: new Date('20212-11-06'),
-            backgroundColor: 'red',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
             borderColor: 'red',
           },
           {
             date: new Date('2022-11-03'),
-            backgroundColor: 'red',
+            backgroundColor: 'rgba(100, 50, 200, 0.2)',
             borderColor: 'red',
           },
         ]}

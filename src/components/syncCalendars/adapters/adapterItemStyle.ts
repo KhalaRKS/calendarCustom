@@ -12,7 +12,9 @@ export default function adapterItemStyle(
       borderWidth: 1,
       backgroundColor: item.backgroundColor,
       borderColor: item.borderColor,
-      transform: [{scale: Number(`1.${scale}`)}],
+      transform: [
+        {scale: Number(`1.${scale}`) > 1.5 ? 1.5 : Number(`1.${scale}`)},
+      ],
     },
     textStyle: {color: 'black'},
   };
