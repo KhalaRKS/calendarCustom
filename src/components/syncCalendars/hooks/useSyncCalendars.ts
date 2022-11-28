@@ -15,6 +15,11 @@ import {CustomDateStyle} from '../../../models/customDateStyle.interface';
 import {ItemCalendar} from '../../../models/itemCalendar.interface';
 import {IItemaAdapted} from '../../../models/itemsAdapted.interface';
 import moment from 'moment';
+import {ReferenceCalendar} from '../../../enums/refCalendar.enum';
+import {
+  SyncCalendarsCases,
+  getSyncCalendarsCase,
+} from '../services/syncCases.service';
 
 const useSyncCalendars = (
   onSelectDate?: (
@@ -27,9 +32,7 @@ const useSyncCalendars = (
   disabledRageSelection?: boolean,
 ) => {
   const {start, end, setStart, setEnd} = useFivvyCalendarProvider();
-
   const [styles, setStyles] = useState<any>(undefined);
-
   const [loading, setLoadgin] = useState<boolean>(false);
 
   const {
@@ -78,27 +81,44 @@ const useSyncCalendars = (
     setMaxDateTwo(nextMonthLastDay);
   };
 
+  const selectedStart = (date?: Moment) => {
+    setStart(date?.toDate());
+    setSelectedStartDateOne(date?.toDate());
+    setSelectedStartDateTwo(date?.toDate());
+  };
+
+  const selectedEnd = (date?: Moment) => {
+    setEnd(date?.toDate());
+    setSelectedEndDateOne(date?.toDate());
+    setSelectedEndDateTwo(date?.toDate());
+  };
+
+  const resetDates = () => {
+    setStart(undefined);
+    setEnd(undefined);
+    setSelectedStartDateOne(undefined);
+    setSelectedStartDateTwo(undefined);
+    setSelectedEndDateOne(undefined);
+    setSelectedEndDateTwo(undefined);
+  };
+
+  const dateHandler = (date?: Date | Moment | undefined) => {
+    let d = date;
+
+    moment.isMoment(date) && (d = date.toDate());
+
+    initialDateHandler(d as Date | undefined);
+    minDateHanlder(d as Date | undefined);
+    maxDateHanlder(d as Date | undefined);
+  };
+
   const onMonthChangeHandler: DateChangedCallback = (
     date: Moment,
     type: SELECTION_DATE,
   ) => {
-    initialDateHandler(date.toDate());
-    minDateHanlder(date.toDate());
-    maxDateHanlder(date.toDate());
+    dateHandler(date);
     onMonthChange && onMonthChange();
   };
-
-  const initializeSyncCalendars = (date?: Date) => {
-    initialDateHandler(date);
-    minDateHanlder(date);
-    maxDateHanlder(date);
-  };
-
-  useEffect(() => {
-    initializeSyncCalendars();
-  }, []);
-
-  //
 
   const getDateInfo = (date?: Date) => {
     if (!date) {
@@ -114,98 +134,56 @@ const useSyncCalendars = (
     return dateInfo;
   };
 
-  //
-
-  const onPressCalendarOne = (date: Moment) => {
-    setLoadgin(true);
-    // si no hay fecha de inicio, se setea la fecha seleccionada
-    if (!start && !end) {
-      setStart(date.toDate());
-      setSelectedStartDateOne(date.toDate());
-      setSelectedStartDateTwo(date.toDate());
-
-      if (onSelectDate) {
-        onSelectDate(date.toDate(), undefined);
-      }
+  const calendarCases = {
+    [SyncCalendarsCases.NO_START_NO_END]: (
+      date: Moment,
+      calendar: ReferenceCalendar,
+    ) => {
+      calendar === ReferenceCalendar.ONE && dateHandler(date);
+      selectedStart(date);
+      onSelectDate && onSelectDate(date.toDate(), undefined);
 
       return;
-    }
+    },
 
-    if (start && !end) {
-      // si hay fecha de inicio, se setea la fecha de fin
-      setEnd(date.toDate());
-      setSelectedEndDateOne(date.toDate());
-      setSelectedEndDateTwo(date.toDate());
-
-      if (onSelectDate) {
-        onSelectDate(start, date.toDate());
-      }
+    [SyncCalendarsCases.START_NO_END]: (date: Moment) => {
+      selectedEnd(date);
+      onSelectDate && onSelectDate(start, date.toDate());
 
       return;
-    }
+    },
 
-    if (start && end) {
-      setStart(undefined);
-      setEnd(undefined);
-      setSelectedStartDateOne(undefined);
-      setSelectedStartDateTwo(undefined);
-      setSelectedEndDateOne(undefined);
-      setSelectedEndDateTwo(undefined);
-
-      if (onSelectDate) {
-        onSelectDate(undefined, undefined);
-      }
+    [SyncCalendarsCases.START_END]: (date: Moment) => {
+      resetDates();
+      onSelectDate && onSelectDate(undefined, undefined);
 
       return;
-    }
+    },
   };
 
-  const onPressCalendarTwo = (date: Moment) => {
+  const onPressCalendar = (date: Moment, calendar: ReferenceCalendar) => {
     setLoadgin(true);
+    const syncCalendarsCase = getSyncCalendarsCase(start, end);
+    calendarCases[syncCalendarsCase](date, calendar);
+  };
 
-    if (!start && !end) {
-      // mover el calendario 1 a la fecha seleccionada
-      initialDateHandler(date.toDate());
-      minDateHanlder(date.toDate());
-      maxDateHanlder(date.toDate());
-      setStart(date.toDate());
-      setSelectedStartDateOne(date.toDate());
-      setSelectedStartDateTwo(date.toDate());
+  const infoItemHandler = (date: Moment) => {
+    if (!onSelectDate) return;
 
-      if (onSelectDate) {
-        onSelectDate(date.toDate(), undefined);
-      }
-
-      return;
-    }
-
-    if (start && !end) {
-      // si hay fecha de inicio, se setea la fecha de fin
-      setEnd(date.toDate());
-      setSelectedEndDateTwo(date.toDate());
-      setSelectedEndDateOne(date.toDate());
-
-      if (onSelectDate) {
-        onSelectDate(start, date.toDate());
-      }
-
-      return;
-    }
-
-    if (start && end) {
-      setStart(undefined);
-      setEnd(undefined);
-      setSelectedStartDateOne(undefined);
-      setSelectedStartDateTwo(undefined);
-      setSelectedEndDateOne(undefined);
-      setSelectedEndDateTwo(undefined);
-
-      if (onSelectDate) {
-        onSelectDate(undefined, undefined);
-      }
-
-      return;
-    }
+    const dateInfo = getDateInfo(date && date.toDate());
+    onSelectDate(
+      date && date.toDate(),
+      date && date.toDate(),
+      dateInfo?.map(item => {
+        return {
+          title: item.title,
+          description: item.description,
+          value: item.value,
+          date: item.date,
+          cb: item.callback,
+        };
+      }),
+    );
   };
 
   const onDateChangeCalendarOne: DateChangedCallback = (
@@ -213,26 +191,11 @@ const useSyncCalendars = (
     type: SELECTION_DATE,
   ) => {
     if (!disabledRageSelection) {
-      onPressCalendarOne(date);
+      onPressCalendar(date, ReferenceCalendar.ONE);
       //return;
     }
 
-    if (onSelectDate) {
-      const dateInfo = getDateInfo(date && date.toDate());
-      onSelectDate(
-        date && date.toDate(),
-        date && date.toDate(),
-        dateInfo?.map(item => {
-          return {
-            title: item.title,
-            description: item.description,
-            value: item.value,
-            date: item.date,
-            cb: item.callback,
-          };
-        }),
-      );
-    }
+    infoItemHandler(date);
   };
 
   const onDateChangeCalendarTwo: DateChangedCallback = (
@@ -240,27 +203,16 @@ const useSyncCalendars = (
     type: SELECTION_DATE,
   ) => {
     if (!disabledRageSelection) {
-      onPressCalendarTwo(date);
+      onPressCalendar(date, ReferenceCalendar.TWO);
       //return;
     }
 
-    if (onSelectDate) {
-      const dateInfo = getDateInfo(date && date.toDate());
-      onSelectDate(
-        date && date.toDate(),
-        date && date.toDate(),
-        dateInfo?.map(item => {
-          return {
-            title: item.title,
-            description: item.description,
-            value: item.value,
-            date: item.date,
-            cb: item.callback,
-          };
-        }),
-      );
-    }
+    infoItemHandler(date);
   };
+
+  useEffect(() => {
+    dateHandler();
+  }, []);
 
   useEffect(() => {
     if (loading) {
