@@ -12,10 +12,6 @@ const App = () => {
           console.log(`start: ${start}, end: ${end}`);
 
           console.log(items);
-
-          /* items?.forEach(item => {
-            console.log(item?.title);
-          }); */
         }}
         onMonthChange={() => {
           console.log('cambie de mes');
