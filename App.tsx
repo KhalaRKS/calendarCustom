@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import FivvyCalendar from './src/components/fivvyCalendar/FivvyCalendar';
 import {StyleSheet, Text, View} from 'react-native';
+import Icon from './Icon';
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -8,8 +9,8 @@ const App = () => {
   return (
     <View style={styles.viewStyle}>
       <FivvyCalendar
-        prevButtonIcon={<Text>{'<'}</Text>}
-        nextButtonIcon={<Text>{'>'}</Text>}
+        prevButtonIcon={<Icon deg={180} />}
+        nextButtonIcon={<Icon deg={0} />}
         onSelectDate={(start, end, items) => {
           console.log(`start: ${start}, end: ${end}`);
 
@@ -18,6 +19,7 @@ const App = () => {
         onMonthChange={() => {
           console.log('cambie de mes');
         }}
+        selectedRangeColor={'#aa62d496'}
         items={[
           {
             date: new Date('2022-12-10'),

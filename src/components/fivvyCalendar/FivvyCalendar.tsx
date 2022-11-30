@@ -14,8 +14,8 @@ interface Props {
   ) => void;
   selectedRangeColor?: string;
   disabledRageSelection?: boolean;
-  prevButtonIcon?: string | JSX.Element;
-  nextButtonIcon?: string | JSX.Element;
+  prevButtonIcon?: JSX.Element;
+  nextButtonIcon?: JSX.Element;
 }
 
 const FivvyCalendar = ({

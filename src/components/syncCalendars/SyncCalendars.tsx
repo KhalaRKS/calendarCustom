@@ -69,6 +69,10 @@ const SyncCalendars = ({
             onDateChange={onDateChangeCalendarOne}
             onMonthChange={onMonthChangeHandler}
             customDatesStyles={styles}
+            previousTitle={prevButtonIcon ? undefined : '<'}
+            nextTitle={nextButtonIcon ? undefined : '>'}
+            previousComponent={prevButtonIcon ? prevButtonIcon : undefined}
+            nextComponent={nextButtonIcon ? nextButtonIcon : undefined}
             selectedRangeStyle={{
               backgroundColor: selectedRangeColor
                 ? selectedRangeColor
@@ -107,10 +111,6 @@ const SyncCalendars = ({
                 ? selectedRangeColor
                 : 'transparent',
             }}
-            previousTitle={prevButtonIcon ? undefined : '<'}
-            nextTitle={nextButtonIcon ? undefined : '>'}
-            previousComponent={prevButtonIcon ? prevButtonIcon : undefined}
-            nextComponent={nextButtonIcon ? nextButtonIcon : undefined}
           />
         </>
       )}
