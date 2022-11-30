@@ -1,9 +1,8 @@
-import {Button, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
-import SyncCalendars from '../syncCalendars/SyncCalendars';
-import {ItemCalendar} from '../../models/itemCalendar.interface';
+import React = require('react');
+import {StyleSheet} from 'react-native';
 import FivvyCalendarProvider from '../../context/FivvyCalendarProvider';
-import {SelectedRangeStyle} from '../../models/selectedRangeStyle.interface';
+import {ItemCalendar} from '../../models/itemCalendar.interface';
+import SyncCalendars from '../syncCalendars/SyncCalendars';
 
 interface Props {
   items?: ItemCalendar[];
@@ -15,6 +14,8 @@ interface Props {
   ) => void;
   selectedRangeColor?: string;
   disabledRageSelection?: boolean;
+  prevButtonIcon?: string | JSX.Element;
+  nextButtonIcon?: string | JSX.Element;
 }
 
 const FivvyCalendar = ({
@@ -23,6 +24,8 @@ const FivvyCalendar = ({
   onSelectDate,
   selectedRangeColor,
   disabledRageSelection,
+  prevButtonIcon,
+  nextButtonIcon,
 }: Props) => {
   return (
     <FivvyCalendarProvider>
@@ -32,6 +35,8 @@ const FivvyCalendar = ({
         onSelectDate={onSelectDate}
         selectedRangeColor={selectedRangeColor}
         disabledRageSelection={disabledRageSelection}
+        prevButtonIcon={prevButtonIcon}
+        nextButtonIcon={nextButtonIcon}
       />
     </FivvyCalendarProvider>
   );

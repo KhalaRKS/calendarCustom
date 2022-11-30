@@ -6,6 +6,8 @@ const App = () => {
   return (
     <View style={styles.viewStyle}>
       <FivvyCalendar
+        prevButtonIcon={<Text>{'<'}</Text>}
+        nextButtonIcon={<Text>{'>'}</Text>}
         onSelectDate={(start, end, items) => {
           console.log(`start: ${start}, end: ${end}`);
 

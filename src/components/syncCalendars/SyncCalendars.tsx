@@ -14,6 +14,8 @@ interface Props {
     items: any[],
   ) => void;
   disabledRageSelection?: boolean;
+  prevButtonIcon?: string | JSX.Element;
+  nextButtonIcon?: string | JSX.Element;
 }
 
 const SyncCalendars = ({
@@ -22,6 +24,8 @@ const SyncCalendars = ({
   onSelectDate,
   selectedRangeColor,
   disabledRageSelection = false,
+  prevButtonIcon,
+  nextButtonIcon,
 }: Props) => {
   const {
     initialDateOne,
@@ -103,6 +107,10 @@ const SyncCalendars = ({
                 ? selectedRangeColor
                 : 'transparent',
             }}
+            previousTitle={prevButtonIcon ? undefined : '<'}
+            nextTitle={nextButtonIcon ? undefined : '>'}
+            previousComponent={prevButtonIcon ? prevButtonIcon : undefined}
+            nextComponent={nextButtonIcon ? nextButtonIcon : undefined}
           />
         </>
       )}
