@@ -61,7 +61,6 @@ const useSyncCalendars = (
     setSelectedEndDate: setSelectedEndDateTwo,
   } = useSingleCalendar();
 
-  // initial date sync
   const initialDateHandler = (initialDate?: Date) => {
     const today = initialDate || new Date();
     const nextMonth = getNextMonth(today);
@@ -192,7 +191,6 @@ const useSyncCalendars = (
   ) => {
     if (!disabledRageSelection) {
       onPressCalendar(date, ReferenceCalendar.ONE);
-      //return;
     }
 
     infoItemHandler(date);
@@ -204,7 +202,6 @@ const useSyncCalendars = (
   ) => {
     if (!disabledRageSelection) {
       onPressCalendar(date, ReferenceCalendar.TWO);
-      //return;
     }
 
     infoItemHandler(date);
